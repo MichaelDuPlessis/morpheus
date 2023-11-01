@@ -20,25 +20,25 @@ pub trait Num {
     fn additive_identity() -> Self;
 }
 
-// Annoying to do code like this
-// maybe a macro could be used instead
+// macro to implement Num for some amount of tupes
+macro_rules! implement_num {
+    ($m:literal, $a:literal, $($t:ty),*) => {
+        $(impl Num for $t {
+            fn multiplicative_identity() -> Self {
+                $m
+            }
 
-impl Num for f64 {
-    fn multiplicative_identity() -> Self {
-        1.0
-    }
-
-    fn additive_identity() -> Self {
-        0.0
-    }
+            fn additive_identity() -> Self {
+                $a
+            }
+        })*
+    };
 }
 
-impl Num for f32 {
-    fn multiplicative_identity() -> Self {
-        1.0
-    }
-
-    fn additive_identity() -> Self {
-        0.0
-    }
-}
+// ========================================================
+// implementing Num for Rust number types
+// floats
+implement_num!(1.0, 0.0, f64, f32);
+// implement_num!(1.0, 0.0);
+// ints
+implement_num!(1, 0, u128, i128, usize, isize, u64, i64, u32, i32, u16, i16, u8, i8);
