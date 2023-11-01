@@ -1,3 +1,4 @@
+mod num;
 pub mod test;
 
 pub fn add(left: usize, right: usize) -> usize {
@@ -26,6 +27,5 @@ mod tests {
                 assert_eq!(matrix[i][j], 0);
             }
         }
-
     }
 }
