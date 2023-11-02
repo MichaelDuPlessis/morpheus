@@ -3,6 +3,7 @@ use std::ops::Add;
 use std::ops::Index;
 use std::ops::IndexMut;
 use std::ops::Sub;
+use super::num::Num;
 
 pub struct MatrixXd<T: Num> {
     elements: Vec<T>,
