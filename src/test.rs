@@ -1,60 +1,75 @@
-use std::fmt::Debug;
-use std::ops::Add;
-use std::ops::Index;
-use std::ops::IndexMut;
-use std::ops::Sub;
+use std::ops::{Add, Sub, Index, IndexMut};
 use super::num::Num;
 
 pub struct MatrixXd<T: Num> {
     elements: Vec<T>,
-    sizes: Vec<usize>,
+    dimensions: Vec<usize>,
 }
 
-/*
-impl<T> MatrixXd<T>
-where
-    T: Debug + Clone + Copy,
-{
-    pub fn full(num_rows: usize, num_cols: usize, fill_value: T) -> Self {
-        let mut rows = Vec::with_capacity(num_rows);
+impl<T: Num + Add<Output = T> + Clone + Copy> MatrixXd<T> {
+    pub fn new(dimensions: Vec<usize>) -> Self {
+        // calculate the number of elements in the flat array by multiplying the dimesntions together
+        let flat_size: usize = dimensions.iter().product();
 
-        for _ in 0..num_rows {
-            let mut new_row = Vec::with_capacity(num_cols);
+        Self { elements: vec![T::additive_identity(); flat_size], dimensions }
+    }
 
-            for _ in 0..num_cols {
-                new_row.push(fill_value);
-            }
+    fn with_elements(dimensions: Vec<usize>, elements: Vec<T>) -> Self {
+        let flat_size: usize = dimensions.iter().product();
 
-            rows.push(new_row);
+        assert_eq!(flat_size, elements.len());
+
+        Self {
+            dimensions,
+            elements
         }
-
-        MatrixXd { elements: rows }
     }
 }
 
-impl<T: Debug> Debug for MatrixXd<T> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let mut string = String::new();
+impl<T: Num> Add for MatrixXd<T> {
+    type Output = MatrixXd<T>;
 
-        for e in &self.elements {
-            string = format!("{}{:?}\n", string, e);
+    fn add(self, rhs: Self) -> Self::Output {
+        if self.dimensions != rhs.dimensions {
+            panic!("Attempt to add matrices of different dimensions:\n\tlhs dimensions: {:?}\n\trhs dimensions: {:?}", self.dimensions, rhs.dimensions);
         }
 
-        write!(f, "{}", string.as_str())
-    }
+        let elements: Vec<T> = self.elements.iter().zip(rhs.elements.iter()).map(|(&lhs_element, &rhs_element)| lhs_element + rhs_element).collect();
+
+        Self {
+            dimensions: self.dimensions.clone(),
+            elements 
+        }
+    }  
 }
 
-impl<T> Index<usize> for MatrixXd<T> {
-    type Output = Vec<T>;
+impl<T: Num> Sub for MatrixXd<T> {
+    type Output = MatrixXd<T>;
+
+    fn sub(self, rhs: Self) -> Self::Output {
+        if self.dimensions != rhs.dimensions {
+            panic!("Attempt to add matrices of different dimensions:\n\tlhs dimensions: {:?}\n\trhs dimensions: {:?}", self.dimensions, rhs.dimensions);
+        }
+
+        let elements: Vec<T> = self.elements.iter().zip(rhs.elements.iter()).map(|(&lhs_element, &rhs_element)| lhs_element - rhs_element).collect();
+
+        Self {
+            dimensions: self.dimensions.clone(),
+            elements 
+        }
+    }  
+}
+
+impl<T: Num> Index<usize> for MatrixXd<T> {
+    type Output = T;
 
     fn index(&self, index: usize) -> &Self::Output {
-        &self.elements[index]
+        &self.elements[index] 
     }
 }
 
-impl<T> IndexMut<usize> for MatrixXd<T> {
+impl<T: Num> IndexMut<usize> for MatrixXd<T> {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
         &mut self.elements[index]
     }
 }
-*/
