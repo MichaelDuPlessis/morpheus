@@ -33,7 +33,6 @@ pub trait MatrixOps<N: Num>: VectorOps<N> + Mul + MulAssign + Div + DivAssign {
 pub struct Matrix<N: Num, D: Dimension> {
     elements: Vec<N>,
     dimensions: D,
-    stride: usize,
 }
 
 impl<N: Num, D: Dimension> Matrix<N, D> {
@@ -44,18 +43,25 @@ impl<N: Num, D: Dimension> Matrix<N, D> {
         Self {
             elements,
             dimensions,
-            stride: 0,
         }
     }
 }
 
+pub struct MatrixView<N: Num, D: Dimension> {
+    elements: Vec<N>,
+    dimensions: D,
+    stride: usize, 
+}
+
+
 impl<N: Num, D: Dimension> Index<usize> for Matrix<N, D> {
-    type Output = Self;
+    type Output = MatrixView<N, D>;
 
     fn index(&self, index: usize) -> &Self::Output {
-        todo!()
+
     }
 }
+
 
 /*
 pub struct MatrixXd<T: Num, D: Dimension> {
@@ -176,7 +182,6 @@ impl<T: Num, D: Dimension> Index<&[usize]> for MatrixXd<T, D> {
         &self[flat_index]
     }
 }
-*/
 
 #[macro_export]
 macro_rules! matrix {
@@ -206,3 +211,4 @@ mod tests {
         let x = matrix!(u8, [a, b]);
     }
 }
+*/

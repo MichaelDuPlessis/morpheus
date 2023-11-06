@@ -1,7 +1,7 @@
-use std::ops::{Add, Mul, Sub};
+use std::ops::{Add, Mul, Sub, AddAssign};
 
 /// This trait reprsents a number that can be used in a matrix
-pub trait Num: Sub<Output = Self> + Add<Output = Self> + Mul<Output = Self> + Clone + Copy {
+pub trait Num: Sub<Output = Self> + Add<Output = Self> + Mul<Output = Self> + AddAssign<Output = Self>+ Clone + Copy {
     /// This function returns the multiplicative identity also know as the indentity element for its type.
     /// For numbers this is typically 1.
     /// ```

@@ -1,4 +1,4 @@
-pub trait Dimension: Clone {
+pub trait Dimension: Clone + From<Vec<usize>> {
     fn dims(&self) -> &[usize];
 
     fn flat_size(&self) -> usize;
@@ -6,6 +6,12 @@ pub trait Dimension: Clone {
 
 #[derive(Clone, Copy)]
 pub struct StackDims<const D: usize>(pub [usize; D]);
+
+impl<const D: usize> From<Vec<usize>> for StackDims<D> {
+    fn from(value: Vec<usize>) -> Self {
+        Self(value.try_into().unwrap())
+    }
+}
 
 impl<const D: usize> Dimension for StackDims<D> {
     fn dims(&self) -> &[usize] {

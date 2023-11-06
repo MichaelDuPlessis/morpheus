@@ -1,26 +1,17 @@
 mod dimension;
-mod matrix_base;
+mod matrix;
 mod num;
 
 #[cfg(test)]
 mod tests {
-    use crate::{dimension::*, matrix_base::MatrixXd};
+    use crate::matrix::Matrix;
 
-    use super::*;
+    fn it_works() {}
 
-    #[test]
-    fn it_works() {
-        let r: usize = rand::random(); // pretend random number
-                                       // we want matrix of float in 7 dimensions
-        let arr = [r; 4];
-        let x = matrix!(u8, arr);
-    }
-
-    /*
     #[test]
     fn add_matrices() {
-        let mut matrix1 = matrix!((2, 2), isize);
-        let mut matrix2 = matrix!((2, 2), isize);
+        let mut matrix1 = Matrix::zeros(vec![2, 2]);
+        let mut matrix2 = Matrix::zeros(vec![2, 2]);
 
         for i in 0..4 {
             matrix1[i] = i as isize;
@@ -33,6 +24,7 @@ mod tests {
             assert_eq!(matrix3[i], (i + i) as isize);
         }
     }
+    /*
 
     #[test]
     fn subtract_matrices() {
