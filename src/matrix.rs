@@ -1,5 +1,5 @@
 use super::num::Num;
-use std::ops::{Add, Index};
+use std::ops::{Add, Index, IndexMut};
 
 pub struct Matrix<N: Num> {
     elements: Vec<N>,
@@ -20,7 +20,7 @@ impl<N: Num> Matrix<N> {
 impl<N: Num> Add for Matrix<N> {
     type Output = Self;
 
-    fn add(self, rhs: Self) -> Self::Output {
+    fn add(mut self, rhs: Self) -> Self::Output {
         if self.dimensions != rhs.dimensions {
             panic!("Attempted to add two matrices with difference dimensions.
                         \n\tlhs dimensions: {:?}
@@ -32,7 +32,7 @@ impl<N: Num> Add for Matrix<N> {
         self.elements
             .iter_mut()
             .zip(rhs.elements.iter())
-            .for_each(|(&mut lhs_element, &rhs_element)| lhs_element += rhs_element);
+            .for_each(|(&mut mut lhs_element, &rhs_element)| lhs_element += rhs_element);
         
         self
     }
@@ -43,5 +43,11 @@ impl<N: Num> Index<usize> for Matrix<N> {
 
     fn index(&self, index: usize) -> &Self::Output {
         &self.elements[index]
+    }
+}
+
+impl<N: Num> IndexMut<usize> for Matrix<N> {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.elements[index]
     }
 }
