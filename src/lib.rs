@@ -8,7 +8,7 @@ pub fn add(left: usize, right: usize) -> usize {
 
 #[cfg(test)]
 mod tests {
-    use crate::{matrix_base::MatrixXd, dimension::{Dims2, Dims3}};
+    use crate::{matrix_base::MatrixXd, dimension::*};
 
     use super::*;
 
@@ -20,8 +20,8 @@ mod tests {
 
     #[test]
     fn add_matrices() {
-        let mut matrix1: MatrixXd<isize, Dims2> = MatrixXd::new(Dims2((2, 2)));
-        let mut matrix2: MatrixXd<isize, Dims2> = MatrixXd::new(Dims2((2, 2)));
+        let mut matrix1 = matrix2D!((2, 2), isize);
+        let mut matrix2 = matrix2D!((2, 2), isize);
 
         for i in 0..4 {
             matrix1[i] = i as isize;
@@ -37,8 +37,8 @@ mod tests {
 
     #[test]
     fn subtract_matrices() {
-        let mut matrix1: MatrixXd<isize, Dims2> = MatrixXd::new(Dims2((2, 2)));
-        let mut matrix2: MatrixXd<isize, Dims2> = MatrixXd::new(Dims2((2, 2)));
+        let mut matrix1 = matrix2D!((2, 2), isize);
+        let mut matrix2 = matrix2D!((2, 2), isize);
 
         for i in 0..4 {
             matrix1[i] = (i + 2) as isize;
@@ -54,22 +54,22 @@ mod tests {
 
     #[test]
     fn basic_indexing() {
-        let mut test_matrix1: MatrixXd<f64, Dims2> = MatrixXd::new(Dims2((10, 10)));
-        let mut test_matrix2: MatrixXd<f64, Dims3> = MatrixXd::new(Dims3((5, 5, 4)));
+        let mut matrix1 = matrix2D!((10, 10), f64);
+        let mut matrix2 = matrix3D!((5, 5, 4), f64);
         
         for i in 0..100 {
-            test_matrix1[i] = i as f64;
-            test_matrix2[i] = i as f64;
+            matrix1[i] = i as f64;
+            matrix2[i] = i as f64;
         }
 
-        let output1 = test_matrix1[vec![5, 0]];
-        let output2 = test_matrix2[vec![2, 2, 2]];
+        let output1 = matrix1[vec![5, 0]];
+        let output2 = matrix2[vec![2, 2, 2]];
 
         assert_eq!(output1, 50.0);
         assert_eq!(output2, 50.0);
 
-        let output3 = test_matrix1[vec![9, 3]];
-        let output4 = test_matrix2[vec![3, 3, 2]];
+        let output3 = matrix1[vec![9, 3]];
+        let output4 = matrix2[vec![3, 3, 2]];
 
         assert_eq!(output3, 93.0);
         assert_eq!(output4, 74.0);

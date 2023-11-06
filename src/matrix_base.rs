@@ -1,6 +1,6 @@
 use std::ops::{Add, Sub, Index, IndexMut};
 use super::num::Num;
-use super::dimension::Dimension;
+use super::dimension::*;
 
 pub struct MatrixXd<T: Num, D: Dimension> {
     elements: Vec<T>,
@@ -38,7 +38,7 @@ impl<T: Num, D: Dimension> Add for MatrixXd<T, D> {
         let d1: Vec<usize> = self.dimensions.into();
         let d2: Vec<usize> = rhs.dimensions.into();
 
-        if d1 != d2 {
+        if d1 != d2 { 
             panic!("Attempt to add matrices of different dimensions:\n\tlhs dimensions: {:?}\n\trhs dimensions: {:?}", d1, d2);
         }
 
@@ -104,3 +104,67 @@ impl<T: Num, D: Dimension> Index<Vec<usize>> for MatrixXd<T, D> {
         &self[flat_index]
     } 
 }
+
+#[macro_export]
+macro_rules! matrix2D {
+    (($($dim:literal),*), $type:ty) => {
+        MatrixXd::new(Dims2($($dim),*)) as MatrixXd<$type, Dims2>
+    }
+}
+
+#[macro_export]
+macro_rules! matrix3D {
+    (($($dim:literal),*), $type:ty) => {
+        MatrixXd::new(Dims3($($dim),*)) as MatrixXd<$type, Dims3>
+    }
+}
+
+#[macro_export]
+macro_rules! matrix4D {
+    (($($dim:literal),*), $type:ty) => {
+        MatrixXd::new(Dims4($($dim),*)) as MatrixXd<$type, Dims4>
+    }
+}
+
+#[macro_export]
+macro_rules! matrix5D {
+    (($($dim:literal),*), $type:ty) => {
+        MatrixXd::new(Dims5($($dim),*)) as MatrixXd<$type, Dims5>
+    }
+}
+
+#[macro_export]
+macro_rules! matrix6D {
+    (($($dim:literal),*), $type:ty) => {
+        MatrixXd::new(Dims6($($dim),*)) as MatrixXd<$type, Dims6>
+    }
+}
+
+#[macro_export]
+macro_rules! matrix7D {
+    (($($dim:literal),*), $type:ty) => {
+        MatrixXd::new(Dims7($($dim),*)) as MatrixXd<$type, Dims7>
+    }
+}
+
+#[macro_export]
+macro_rules! matrix8D {
+    (($($dim:literal),*), $type:ty) => {
+        MatrixXd::new(Dims8($($dim),*)) as MatrixXd<$type, Dims8>
+    }
+}
+
+#[macro_export]
+macro_rules! matrix9D {
+    (($($dim:literal),*), $type:ty) => {
+        MatrixXd::new(Dims9($($dim),*)) as MatrixXd<$type, Dims9>
+    }
+}
+
+#[macro_export]
+macro_rules! matrix10D {
+    (($($dim:literal),*), $type:ty) => {
+        MatrixXd::new(Dims10($($dim),*)) as MatrixXd<$type, Dims10>
+    }
+}
+
