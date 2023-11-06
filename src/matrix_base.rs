@@ -1,70 +1,63 @@
 use super::dimension::*;
 use super::num::Num;
-use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
+use std::ops::{Add, AddAssign, Div, DivAssign, Index, Mul, MulAssign, Sub, SubAssign};
 
-pub enum MatrixError {}
-
-pub trait Matrix<N: Num>:
-    Add
-    + AddAssign
-    + Sub
-    + SubAssign
-    + Mul
-    + Mul<N>
-    + MulAssign
-    + MulAssign<N>
-    + Div
-    + Div<N>
-    + DivAssign
-    + DivAssign<N>
-    + Clone
-    + Sized
+pub trait VectorOps<N: Num>:
+    Add + AddAssign + Sub + SubAssign + Mul<N> + MulAssign<N> + Div<N> + DivAssign<N> + Clone + Sized
 {
-    fn transpose<M: Matrix<N>>(&mut self) -> Result<&mut M, MatrixError>;
+    fn into_matrix<M: MatrixOps<N>>(self) -> M;
+}
 
-    fn transposed<M: Matrix<N>>(self) -> Result<M, MatrixError>;
+pub trait MatrixOps<N: Num>: VectorOps<N> + Mul + MulAssign + Div + DivAssign {
+    fn transpose<M: MatrixOps<N>>(&mut self) -> &mut M;
 
-    fn inverse<M: Matrix<N>>(&mut self) -> Result<&mut M, MatrixError>;
+    fn transposed<M: MatrixOps<N>>(self) -> M;
 
-    fn inversed<M: Matrix<N>>(self) -> Result<M, MatrixError>;
+    fn inverse<M: MatrixOps<N>>(&mut self) -> &mut M;
 
-    fn determinant(&self) -> Result<f64, MatrixError>;
+    fn inversed<M: MatrixOps<N>>(self) -> M;
 
-    fn determinant_f32(&self) -> Result<f32, MatrixError> {
+    fn determinant(&self) -> Option<f64>;
+
+    fn determinant_f32(&self) -> Option<f32> {
         self.determinant().map(|n| n as f32)
     }
 
-    fn powf<M: Matrix<N>>(self, n: f32) -> Result<M, MatrixError>;
+    fn powf<M: MatrixOps<N>>(self, n: f32) -> M;
 
-    fn powi<M: Matrix<N>>(self, n: i32) -> Result<M, MatrixError>;
+    fn powi<M: MatrixOps<N>>(self, n: i32) -> M;
 
-    fn exp<M: Matrix<N>>(&mut self) -> &mut Result<M, MatrixError>;
-
-    fn transpose_unchecked<M: Matrix<N>>(&mut self) -> &mut M;
-
-    fn transposed_unchecked<M: Matrix<N>>(self) -> M;
-
-    fn inverse_unchecked<M: Matrix<N>>(&mut self) -> &mut M;
-
-    fn inversed_unchecked<M: Matrix<N>>(self) -> M;
-
-    fn determinant_unchecked(&self) -> f64;
-
-    fn determinant_f32_unchecked(&self) -> f32 {
-        self.determinant_unchecked() as f32
-    }
-
-    fn powf_unchecked<M: Matrix<N>>(self, n: f32) -> M;
-
-    fn powi_unchecked<M: Matrix<N>>(self, n: i32) -> M;
-
-    fn exp_unchecked<M: Matrix<N>>(&mut self) -> &mut M;
+    fn exp<M: MatrixOps<N>>(&mut self) -> &mut M;
 }
 
-struct Vector<N: Num> {
+pub struct Matrix<N: Num, D: Dimension> {
     elements: Vec<N>,
+    dimensions: D,
+    stride: usize,
 }
 
+impl<N: Num, D: Dimension> Matrix<N, D> {
+    fn zeroes(dimensions: impl Into<D>) -> Self {
+        let dimensions = dimensions.into();
+        let elements = vec![N::additive_identity(); dimensions.flat_size()];
+
+        Self {
+            elements,
+            dimensions,
+            stride: 0,
+        }
+    }
+}
+
+impl<N: Num, D: Dimension> Index<usize> for Matrix<N, D> {
+    type Output = Self;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        todo!()
+    }
+}
+
+/*
 pub struct MatrixXd<T: Num, D: Dimension> {
     elements: Vec<T>,
     dimensions: D,
@@ -96,7 +89,6 @@ impl<T: Num, D: Dimension> MatrixXd<T, D> {
     }
 }
 
-/*
 impl<T: Num, D: Dimension> Add for MatrixXd<T, D> {
     type Output = MatrixXd<T, D>;
 
