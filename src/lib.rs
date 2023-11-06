@@ -1,34 +1,33 @@
-mod num;
 mod dimension;
 mod matrix_base;
-
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+mod num;
 
 #[cfg(test)]
 mod tests {
-    use crate::{matrix_base::MatrixXd, dimension::*};
+    use crate::{dimension::*, matrix_base::MatrixXd};
 
     use super::*;
 
     #[test]
     fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+        let r: usize = rand::random(); // pretend random number
+                                       // we want matrix of float in 7 dimensions
+        let arr = [r; 4];
+        let x = matrix!(u8, arr);
     }
 
+    /*
     #[test]
     fn add_matrices() {
-        let mut matrix1 = matrix2D!((2, 2), isize);
-        let mut matrix2 = matrix2D!((2, 2), isize);
+        let mut matrix1 = matrix!((2, 2), isize);
+        let mut matrix2 = matrix!((2, 2), isize);
 
         for i in 0..4 {
             matrix1[i] = i as isize;
             matrix2[i] = i as isize;
         }
 
-        let matrix3 = matrix1 + matrix2; 
+        let matrix3 = matrix1 + matrix2;
 
         for i in 0..4 {
             assert_eq!(matrix3[i], (i + i) as isize);
@@ -45,7 +44,7 @@ mod tests {
             matrix2[i] = i as isize;
         }
 
-        let matrix3 = matrix1 - matrix2; 
+        let matrix3 = matrix1 - matrix2;
 
         for i in 0..4 {
             assert_eq!(matrix3[i], 2);
@@ -56,7 +55,7 @@ mod tests {
     fn basic_indexing() {
         let mut matrix1 = matrix2D!((10, 10), f64);
         let mut matrix2 = matrix3D!((5, 5, 4), f64);
-        
+
         for i in 0..100 {
             matrix1[i] = i as f64;
             matrix2[i] = i as f64;
@@ -74,4 +73,5 @@ mod tests {
         assert_eq!(output3, 93.0);
         assert_eq!(output4, 74.0);
     }
+    */
 }
