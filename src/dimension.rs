@@ -7,6 +7,12 @@ pub trait Dimension: Clone + From<Vec<usize>> {
 #[derive(Clone, Copy)]
 pub struct StackDims<const D: usize>(pub [usize; D]);
 
+impl<const D: usize> StackDims<D> {
+    pub fn inner(&self) -> [usize; D] {
+        self.0
+    }
+}
+
 impl<const D: usize> From<Vec<usize>> for StackDims<D> {
     fn from(value: Vec<usize>) -> Self {
         Self(value.try_into().unwrap())
@@ -22,12 +28,3 @@ impl<const D: usize> Dimension for StackDims<D> {
         self.0.len()
     }
 }
-
-// #[derive(Clone)]
-// pub struct HeapDims(Vec<usize>);
-//
-// impl Dimension for HeapDims {
-//     fn dims(&self) -> &[usize] {
-//         &self.0
-//     }
-// }

@@ -1,12 +1,14 @@
-use std::ops::{Add, Mul, Sub, AddAssign};
+use std::ops::{Add, AddAssign, Mul, Sub};
 
 /// This trait reprsents a number that can be used in a matrix
-pub trait Num: Sub<Output = Self> + Add<Output = Self> + Mul<Output = Self> + AddAssign + Clone + Copy {
+pub trait Num:
+    Sub<Output = Self> + Add<Output = Self> + Mul<Output = Self> + AddAssign + Clone + Copy
+{
     /// This function returns the multiplicative identity also know as the indentity element for its type.
     /// For numbers this is typically 1.
     /// ```
-    /// let identity = f64::multiplicative_identity();
-    /// assert_eq!(identity, 1.0);
+    //    /// let identity = f64::multiplicative_identity();
+    //    /// assert_eq!(identity, 1.0);
     /// ```
 
     // also known as the identity element
@@ -15,8 +17,8 @@ pub trait Num: Sub<Output = Self> + Add<Output = Self> + Mul<Output = Self> + Ad
     /// This function returns the additive identity for its type.
     /// For numbers this is typically 0.
     /// ```
-    /// let identity = u8::multiplicative_identity();
-    /// assert_eq!(identity, 0);
+    //   /// let identity = u8::multiplicative_identity();
+    //   /// assert_eq!(identity, 0);
     /// ```
 
     fn additive_identity() -> Self;

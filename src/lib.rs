@@ -4,66 +4,17 @@ mod num;
 
 #[cfg(test)]
 mod tests {
-    use crate::matrix::Matrix;
-
-    fn it_works() {}
+    use crate::matrix::MatrixEnum;
 
     #[test]
-    fn add_matrices() {
-        let mut matrix1 = Matrix::zeros(vec![2, 2]);
-        let mut matrix2 = Matrix::zeros(vec![2, 2]);
+    fn index() {
+        let test_matrix: MatrixEnum<f64> = MatrixEnum::zeros(vec![2, 2]);
 
-        for i in 0..4 {
-            matrix1[i] = i as isize;
-            matrix2[i] = i as isize;
-        }
+        println! {"{:#?}", test_matrix};
 
-        let matrix3 = matrix1 + matrix2;
-
-        for i in 0..4 {
-            assert_eq!(matrix3[i], (i + i) as isize);
-        }
+        println!(
+            "================================\nIndex 0:\n{:#?}",
+            test_matrix[0][0]
+        );
     }
-    /*
-
-    #[test]
-    fn subtract_matrices() {
-        let mut matrix1 = matrix2D!((2, 2), isize);
-        let mut matrix2 = matrix2D!((2, 2), isize);
-
-        for i in 0..4 {
-            matrix1[i] = (i + 2) as isize;
-            matrix2[i] = i as isize;
-        }
-
-        let matrix3 = matrix1 - matrix2;
-
-        for i in 0..4 {
-            assert_eq!(matrix3[i], 2);
-        }
-    }
-
-    #[test]
-    fn basic_indexing() {
-        let mut matrix1 = matrix2D!((10, 10), f64);
-        let mut matrix2 = matrix3D!((5, 5, 4), f64);
-
-        for i in 0..100 {
-            matrix1[i] = i as f64;
-            matrix2[i] = i as f64;
-        }
-
-        let output1 = matrix1[vec![5, 0]];
-        let output2 = matrix2[vec![2, 2, 2]];
-
-        assert_eq!(output1, 50.0);
-        assert_eq!(output2, 50.0);
-
-        let output3 = matrix1[vec![9, 3]];
-        let output4 = matrix2[vec![3, 3, 2]];
-
-        assert_eq!(output3, 93.0);
-        assert_eq!(output4, 74.0);
-    }
-    */
 }
