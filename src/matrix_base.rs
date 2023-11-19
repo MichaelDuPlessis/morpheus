@@ -50,18 +50,14 @@ impl<N: Num, D: Dimension> Matrix<N, D> {
 pub struct MatrixView<N: Num, D: Dimension> {
     elements: Vec<N>,
     dimensions: D,
-    stride: usize, 
+    stride: usize,
 }
-
 
 impl<N: Num, D: Dimension> Index<usize> for Matrix<N, D> {
     type Output = MatrixView<N, D>;
 
-    fn index(&self, index: usize) -> &Self::Output {
-
-    }
+    fn index(&self, index: usize) -> &Self::Output {}
 }
-
 
 /*
 pub struct MatrixXd<T: Num, D: Dimension> {

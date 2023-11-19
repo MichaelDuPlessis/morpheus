@@ -4,17 +4,13 @@ mod num;
 
 #[cfg(test)]
 mod tests {
-    use crate::matrix::MatrixEnum;
+    use crate::matrix::{ElementIndex, Matrix, MatrixIndex};
 
     #[test]
     fn index() {
-        let test_matrix: MatrixEnum<f64> = MatrixEnum::zeros(vec![2, 2]);
+        let matrix: Matrix<usize> = Matrix::zeros([2, 2]);
 
-        println! {"{:#?}", test_matrix};
-
-        println!(
-            "================================\nIndex 0:\n{:#?}",
-            test_matrix[0][0]
-        );
+        let x = ElementIndex::index(&matrix, 0);
+        // let y = MatrixIndex::index(&matrix, [0, 1, 4]);
     }
 }

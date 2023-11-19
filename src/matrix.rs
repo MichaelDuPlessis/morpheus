@@ -1,43 +1,36 @@
-use super::num::Num;
+use crate::num::Num;
+use std::borrow::Borrow;
 
-use core::fmt;
-use std::ops::Index;
-
-#[allow(unused)]
-#[derive(Clone, Debug)]
-pub enum MatrixEnum<N: Clone + Num> {
-    Matrix(Vec<MatrixEnum<N>>),
-    Element(N),
+pub struct Matrix<N: Num> {
+    elements: Vec<N>,
+    shape: Vec<usize>,
 }
 
-impl<N: Clone + Num + fmt::Display> MatrixEnum<N> {
-    #[allow(unused)]
-    pub fn zeros(dimensions: Vec<usize>) -> Self {
-        let mut matrix = MatrixEnum::Matrix(vec![
-            MatrixEnum::Element(N::additive_identity());
-            *dimensions.last().unwrap()
-        ]);
+impl<N: Num> Matrix<N> {
+    pub fn zeros(shape: impl Into<Vec<usize>>) -> Self {
+        let shape = shape.into();
+        let elements = vec![N::additive_identity(); shape.iter().copied().product()];
 
-        for dim in dimensions.iter().rev().skip(1) {
-            matrix = fill_matrix(matrix, dim);
-        }
-
-        matrix
+        Self { elements, shape }
     }
 }
 
-#[allow(unused)]
-fn fill_matrix<N: Num>(matrix: MatrixEnum<N>, length: &usize) -> MatrixEnum<N> {
-    MatrixEnum::Matrix(vec![matrix; *length])
+pub trait MatrixIndex<N: Num> {
+    fn index(&self, index: impl Borrow<[usize]>) -> Matrix<N>;
 }
 
-impl<N: Num + Clone + fmt::Display> Index<usize> for MatrixEnum<N> {
-    type Output = MatrixEnum<N>;
+pub trait ElementIndex<N: Num> {
+    fn index(&self, index: usize) -> N;
+}
 
-    fn index(&self, index: usize) -> &Self::Output {
-        match self {
-            Self::Matrix(inner) => &inner[index],
-            Self::Element(inner) => panic!("You cannot index the element: {}", inner),
-        }
+// impl MatrixIndex for Matrix {
+//     fn index(&self, index: impl Borrow<[usize]>) -> Matrix {
+//         Matrix {}
+//     }
+// }
+
+impl<N: Num> ElementIndex<N> for Matrix<N> {
+    fn index(&self, index: usize) -> N {
+        self.elements[index]
     }
 }
