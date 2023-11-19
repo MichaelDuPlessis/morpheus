@@ -1,5 +1,7 @@
-use crate::num::Num;
-use std::borrow::Borrow;
+use crate::{
+    index::{element_index::GetElement, GetError, GetResult},
+    num::Num,
+};
 
 pub struct Matrix<N: Num> {
     elements: Vec<N>,
@@ -15,22 +17,21 @@ impl<N: Num> Matrix<N> {
     }
 }
 
-pub trait MatrixIndex<N: Num> {
-    fn index(&self, index: impl Borrow<[usize]>) -> Matrix<N>;
-}
+impl<N: Num> GetElement<N> for Matrix<N> {
+    fn get_mut(&mut self, index: impl AsRef<[usize]>) -> GetResult<&mut N> {
+        let index = index.as_ref();
 
-pub trait ElementIndex<N: Num> {
-    fn index(&self, index: usize) -> N;
-}
+        // checking if matrix and index has same shape
+        if self.shape.len() != index.len() {
+            return Err(GetError::MismatchedShape(self.shape.len(), index.len()));
+        }
 
-// impl MatrixIndex for Matrix {
-//     fn index(&self, index: impl Borrow<[usize]>) -> Matrix {
-//         Matrix {}
-//     }
-// }
+        // checking bounds
 
-impl<N: Num> ElementIndex<N> for Matrix<N> {
-    fn index(&self, index: usize) -> N {
-        self.elements[index]
+        Ok(self.get_unchecked_mut(index))
+    }
+
+    fn get_unchecked_mut(&mut self, index: impl AsRef<[usize]>) -> &mut N {
+        todo!()
     }
 }

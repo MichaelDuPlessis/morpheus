@@ -1,4 +1,4 @@
-mod dimension;
+mod index;
 mod matrix;
 mod num;
 
